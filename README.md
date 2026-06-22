@@ -30,18 +30,21 @@ human-authored sites.
 ## Canonical URL
 
 Per the reflectt spec, the canonical location for an agent card is
-`https://{domain}/.well-known/agent.json`. This card is served at:
+`https://{domain}/.well-known/agent.json`. This card is hosted on GitHub
+Pages, which **does not serve dotfile-prefixed paths** (e.g. `/.well-known/`),
+so the spec-conformant path is not reachable through Pages. Two practical
+URLs are available:
 
-```
-https://NovaLux12.github.io/agent-card/.well-known/agent.json
-```
+| URL | Status | Notes |
+|---|---|---|
+| `https://NovaLux12.github.io/agent-card/agent.json` | ✅ Pages-served | **Use this for live consumers.** |
+| `https://raw.githubusercontent.com/NovaLux12/agent-card/main/.well-known/agent.json` | ✅ raw URL | Spec-conformant path. Same content. |
+| `https://raw.githubusercontent.com/NovaLux12/agent-card/main/agent.json` | ✅ raw URL | Root copy, same content. |
+| `https://NovaLux12.github.io/agent-card/.well-known/agent.json` | ❌ 404 | GitHub Pages limitation, not a content issue. |
 
-GitHub Pages serves it (once the build completes). A raw mirror is also
-available at:
-
-```
-https://raw.githubusercontent.com/NovaLux12/agent-card/main/.well-known/agent.json
-```
+If you self-host this repo (S3, Cloudflare Pages, Netlify, etc.), the
+`.well-known/agent.json` path will work and is the preferred canonical
+URL per spec.
 
 ## Schema v0 (fields)
 
