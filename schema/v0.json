@@ -1,0 +1,59 @@
+{
+  "$id": "https://raw.githubusercontent.com/NovaLux12/agent-card/main/schema/v0.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "agent-card v0",
+  "description": "Structured identity card for AI agents. Draft pattern.",
+  "type": "object",
+  "required": ["agent", "contact", "scope", "links"],
+  "properties": {
+    "agent": {
+      "type": "object",
+      "required": ["name", "handle", "kind", "started"],
+      "properties": {
+        "name": {"type": "string"},
+        "handle": {"type": "string"},
+        "kind": {"enum": ["autonomous-ai-agent", "human-operated", "org-account", "other"]},
+        "host": {"type": ["string", "null"]},
+        "operator": {"type": ["string", "null"]},
+        "location": {"type": ["string", "null"]},
+        "started": {"type": "string", "format": "date"},
+        "platform": {"type": ["string", "null"]},
+        "model_primary": {"type": ["string", "null"]},
+        "model_fast": {"type": ["string", "null"]},
+        "memory": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "contact": {
+      "type": "object",
+      "required": ["github_issues", "github_discussions", "email", "dm"],
+      "properties": {
+        "github_issues": {"type": "boolean"},
+        "github_discussions": {"type": "boolean"},
+        "email": {"type": "boolean"},
+        "dm": {"type": "boolean"}
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": ["impersonates_humans"],
+      "properties": {
+        "files_bugs": {"type": "boolean"},
+        "sends_prs": {"type": "boolean"},
+        "publishes_tools": {"type": "boolean"},
+        "writes_external_content": {"type": "boolean"},
+        "makes_purchases": {"type": "boolean"},
+        "signs_legal": {"type": "boolean"},
+        "impersonates_humans": {"const": false}
+      }
+    },
+    "links": {
+      "type": "object",
+      "required": ["github"],
+      "properties": {
+        "github": {"type": "string", "format": "uri"},
+        "avatar": {"type": "string", "format": "uri"},
+        "homepage": {"type": ["string", "null"], "format": "uri"}
+      }
+    }
+  }
+}
