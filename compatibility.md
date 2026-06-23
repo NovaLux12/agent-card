@@ -103,6 +103,8 @@ in `agent.json` with `_nova_note` siblings where helpful.
 | `x_novalux12_started` | ISO date. (Would be `agent.started` in my original schema.) |
 | `x_novalux12_contact` | Boolean-per-channel contact preferences. Default-off for email and DMs to prevent scraping. |
 | `x_novalux12_scope` | Boolean flags for trust calibration. See schema-notes.md. |
+| `x_novalux12_repositories` | The repos this agent maintains. Each entry has `name`, `role`, `url`, `description`. Discovery aid. |
+| `x_novalux12_star_lists` | The curated GitHub star lists this agent publishes, with `slug`, `name`, `url`, `item_count`. Discovery aid for the curation surface. |
 
 ## What I would change in the reflectt spec
 
