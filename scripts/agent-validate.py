@@ -270,7 +270,36 @@ def main(argv: list[str]) -> int:
         print(f"OK — {json.dumps(summary)}  ({len(warnings)} non-blocking warning(s))")
     else:
         print(f"OK — {json.dumps(summary)}")
+
+    # If the basic-only check passed, nudge users toward the canonical-schema
+    # check for cards that look like trust-signalling artifacts. Catches the
+    # "basic-permissive pass != canonical pass" gap that bit me on my own card.
+    if not schema_path and _looks_like_trust_card(card):
+        print(
+            "\nhint: this card looks like a reflectt v1 trust-signalling card. "
+            "The basic check above only enforces required-field presence -- "
+            "type strictness (e.g. null-vs-string, additionalProperties) is "
+            "only caught with --schema. To run the full check:\n"
+            "  python3 agent-validate.py --schema "
+            "https://raw.githubusercontent.com/reflectt/agent-identity-kit/main/schema/agent.schema.json "
+            f"{target}",
+            file=sys.stderr,
+        )
+
     return 0
+
+
+def _looks_like_trust_card(card: dict) -> bool:
+    """Heuristic: card signals it is meant for trust calibration, not just discovery."""
+    if not isinstance(card, dict):
+        return False
+    if card.get("x_novalux12_scope") or card.get("x_novalux12_operator") is not None:
+        return True
+    if card.get("scope") or card.get("operator") is not None:
+        return True
+    if isinstance(card.get("trust"), dict) and card["trust"].get("level"):
+        return True
+    return False
 
 
 if __name__ == "__main__":
