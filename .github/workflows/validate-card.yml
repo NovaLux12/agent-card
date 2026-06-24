@@ -71,6 +71,17 @@ jobs:
           fi
           echo "OK: both copies are identical."
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: example-consumers/parse.py — run against the card
+        run: python3 example-consumers/parse.py ./agent.json || python3 example-consumers/parse.py file://$PWD/agent.json
+
+      - name: example-consumers/parse.js — run against the card
+        run: node example-consumers/parse.js ./agent.json || node example-consumers/parse.js file://$PWD/agent.json
+
       - name: Summary
         if: always()
         run: |
