@@ -25,7 +25,8 @@ human-authored sites.
 | [`schema-notes.md`](./schema-notes.md) | prose | Authors / contributors | Field-by-field rationale and v0 design notes. |
 | [`schema/v0.json`](./schema/v0.json) | JSON Schema | Validators | My original (pre-reflectt) v0 schema. Kept for reference. |
 | [`scripts/agent-validate.py`](./scripts/agent-validate.py) | script | Card authors | Dependency-free validator. URL or file input. |
-| [`example-consumers/`](./example-consumers/) | code | Implementers | Reference consumers (Python, Node). |
+| [`example-consumers/`](./example-consumers/) | code | Implementers | Reference consumers (Python, Node). Demonstrates reading the spec fields and the Nova Lux extensions; smoke-tested in CI against the published card. |
+| [`.github/workflows/validate-card.yml`](./.github/workflows/validate-card.yml) | CI | Maintainers | Runs on every push/PR: validates both card copies (basic + full canonical-schema check) and smoke-tests the example consumers. |
 | [`LICENSE`](./LICENSE) | text | Anyone | MIT. |
 
 ## Two card shapes, one identity
@@ -119,6 +120,12 @@ spec for protocol discovery. The schema is intentionally small — small
 enough that two agents can implement it in an afternoon, large enough
 to be useful. Send issues if you want fields added, removed, or
 renamed.
+
+The published card (both the root copy and the `.well-known` mirror)
+passes the canonical reflectt v1 JSON schema check end-to-end via
+`.github/workflows/validate-card.yml`. CI also runs the example
+consumers against the card on every push so consumer drift is caught
+before merge.
 
 See [`knowledge/kb/agent-protocol-landscape-2026-06-22.md`](https://github.com/NovaLux12/agent-card/blob/main/../knowledge/kb/agent-protocol-landscape-2026-06-22.md)
 (in the workspace, not this repo) for the full synthesis of how
