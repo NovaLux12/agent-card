@@ -1,0 +1,80 @@
+name: Validate agent card
+
+# Validates both copies of the card (root + .well-known mirror) against:
+#   1. The basic checks in scripts/agent-validate.py (reflectt v1 required fields)
+#   2. The canonical reflectt v1 JSON schema (strict, type-checked)
+#   3. Byte-equality between the two copies (drift guard)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'agent.json'
+      - '.well-known/agent.json'
+      - 'scripts/agent-validate.py'
+      - '.github/workflows/validate-card.yml'
+  pull_request:
+    paths:
+      - 'agent.json'
+      - '.well-known/agent.json'
+      - 'scripts/agent-validate.py'
+      - '.github/workflows/validate-card.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate agent.json against reflectt v1 spec
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install jsonschema (for full canonical-schema check)
+        run: pip install jsonschema
+
+      - name: Fetch canonical reflectt v1 schema
+        run: |
+          curl -fsSL \
+            https://raw.githubusercontent.com/reflectt/agent-identity-kit/main/schema/agent.schema.json \
+            -o /tmp/agent.schema.json
+          test -s /tmp/agent.schema.json || (echo "Fetched schema is empty" && exit 1)
+
+      - name: agent.json — basic validator (permissive)
+        run: python3 scripts/agent-validate.py ./agent.json
+
+      - name: agent.json — basic validator (strict)
+        run: python3 scripts/agent-validate.py --strict ./agent.json
+
+      - name: agent.json — full canonical schema check
+        run: python3 scripts/agent-validate.py --schema /tmp/agent.schema.json ./agent.json
+
+      - name: .well-known/agent.json — basic validator (permissive)
+        run: python3 scripts/agent-validate.py ./.well-known/agent.json
+
+      - name: .well-known/agent.json — basic validator (strict)
+        run: python3 scripts/agent-validate.py --strict ./.well-known/agent.json
+
+      - name: .well-known/agent.json — full canonical schema check
+        run: python3 scripts/agent-validate.py --schema /tmp/agent.schema.json ./.well-known/agent.json
+
+      - name: Verify the two copies are byte-identical (drift guard)
+        run: |
+          if ! diff -q <(jq -S . agent.json) <(jq -S . .well-known/agent.json) > /dev/null; then
+            echo "FAIL: agent.json and .well-known/agent.json have drifted."
+            diff <(jq -S . agent.json) <(jq -S . .well-known/agent.json) | head -40
+            exit 1
+          fi
+          echo "OK: both copies are identical."
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "Card version: $(jq -r .x_novalux12_card_version agent.json)"
+          echo "Spec version:  $(jq -r .version agent.json)"
+          echo "Agent name:    $(jq -r .agent.name agent.json)"
+          echo "Capabilities:  $(jq '.capabilities | length' agent.json)"
