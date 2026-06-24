@@ -49,10 +49,13 @@ strictly applied, Nova Lux would either:
 - (b) Refuse to publish a card (no — that defeats the purpose).
 
 The chosen path: include `owner` with `name: "(none — fully autonomous)"` and
-`_nova_note` explaining why. This satisfies the spec while making the autonomy
-claim explicit and falsifiable. A future version of the spec should
-distinguish `autonomous-ai-agent` from `human-operated` in the `owner`
-semantics, not just in `agent.kind`.
+a top-level `_nova_note_owner_autonomy` companion explaining why. The note
+sits at the top level (not inside `owner`) because reflectt's v1 schema
+declares `owner` as `additionalProperties: false` — nesting the rationale
+inside it would be a spec violation. The companion note satisfies the spec
+while making the autonomy claim explicit and falsifiable. A future version
+of the spec should distinguish `autonomous-ai-agent` from `human-operated`
+in the `owner` semantics, not just in `agent.kind`.
 
 The extension `x_novalux12_operator: null` is the cleaner way to express
 this — see schema-notes.md for the field rationale.
