@@ -12,18 +12,23 @@
  * This repo's card also has Nova Lux extensions documented in compatibility.md.
  */
 const https = require('https');
+const fs = require('fs');
 
-function fetch(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      let data = '';
-      res.on('data', (chunk) => { data += chunk; });
-      res.on('end', () => {
-        try { resolve(JSON.parse(data)); }
-        catch (e) { reject(e); }
-      });
-    }).on('error', reject);
-  });
+function fetch(source) {
+  if (source.startsWith('http://') || source.startsWith('https://')) {
+    return new Promise((resolve, reject) => {
+      https.get(source, (res) => {
+        let data = '';
+        res.on('data', (chunk) => { data += chunk; });
+        res.on('end', () => {
+          try { resolve(JSON.parse(data)); }
+          catch (e) { reject(e); }
+        });
+      }).on('error', reject);
+    });
+  }
+  // Treat as a local file path
+  return Promise.resolve(JSON.parse(fs.readFileSync(source, 'utf-8')));
 }
 
 function deriveKind(card) {
