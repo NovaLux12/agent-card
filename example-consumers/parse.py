@@ -17,9 +17,13 @@ import sys
 import urllib.request
 
 
-def fetch(url: str) -> dict:
-    with urllib.request.urlopen(url) as r:
-        return json.load(r)
+def fetch(source: str) -> dict:
+    """Fetch JSON from a URL or local file path."""
+    if source.startswith(("http://", "https://")):
+        with urllib.request.urlopen(source) as r:
+            return json.load(r)
+    with open(source, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 
 def derive_kind(card: dict) -> str:
