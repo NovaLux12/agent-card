@@ -155,6 +155,10 @@ _KNOWN_TOP_LEVEL = {
     "$schema", "version",
     "agent", "owner", "platform", "capabilities", "protocols",
     "endpoints", "trust", "links",  # v1 spec fields
+    # v1 spec fields added after the initial _KNOWN_TOP_LEVEL was hand-curated:
+    "voice",            # voice / TTS identity (v1 spec)
+    "created_at",       # card creation timestamp (v1 spec)
+    "updated_at",       # card last-updated timestamp (v1 spec)
     # Recognised extension names (informational only — strict mode still flags them)
     "_nova_compat", "_spec_ref", "_nova_note",
 }
@@ -179,22 +183,71 @@ def validate_full(card: dict, schema: dict, *, strict: bool = False) -> list[str
         # In non-strict mode, demote "additional property" errors for x_*/_ extensions
         if not strict and "Additional properties are not allowed" in msg:
             # Try to extract which keys are extra
-            extra = _extract_extra_keys(msg)
+            extra = _extract_extra_keys_from_err(e) or _extract_extra_keys(msg)
             non_ext = [k for k in extra if not k.startswith(EXTENSION_PREFIXES)]
             if not non_ext:
                 # All extras are extensions — treat as warning
                 errs.append(f"warn: {msg}")
                 continue
+            # Some extras are non-extension fields — surface as a real error
+            # but include the full list so the author sees what was extra
+            errs.append(
+                f"{msg} (non-extension extras: {non_ext})"
+            )
+            continue
         errs.append(msg)
     return errs
 
 
 def _extract_extra_keys(msg: str) -> list[str]:
-    """Pull the field-name list out of a jsonschema 'Additional properties' message."""
-    m = re.search(r"\(([^)]+)\s+were unexpected\)", msg)
+    """Pull the field-name list out of a jsonschema 'Additional properties' message.
+
+    The jsonschema (draft-7) error message format is:
+        Additional properties are not allowed ('k1', 'k2', ... 'kN' were unexpected)
+
+    Note: there is NO closing ')' between the field list and 'were unexpected'.
+    The outer '(' closes only after 'were unexpected'. The previous regex
+    `\\(([^)]+)\\s+were unexpected\\)` was broken because `[^)]+` stopped at
+    the (non-existent) closing ')' of an inner group — which never appears
+    in this message format. The fix: lazy-match the inner list.
+    """
+    m = re.search(r"\((.+?)\s+were unexpected\)", msg)
     if not m:
         return []
     return [s.strip().strip("'\"") for s in m.group(1).split(",")]
+
+
+def _extract_extra_keys_from_err(err: Any) -> list[str]:
+    """Extract extra field names from a jsonschema error object.
+
+    Prefers the structured error attributes (more robust than parsing the
+    message). Falls back to message parsing.
+    """
+    if getattr(err, "validator", None) != "additionalProperties":
+        return []
+    instance = getattr(err, "instance", None)
+    if not isinstance(instance, dict):
+        # Fall back to message parsing
+        return _extract_extra_keys(getattr(err, "message", ""))
+    # The schema_path points to the additionalProperties rule. Walk to the
+    # matching instance level so we read keys against the right schema.
+    schema_path = list(getattr(err, "schema_path", []) or [])
+    parent = instance
+    # Walk the parent instance to the level named in schema_path
+    # (e.g. ['properties', 'agent', 'additionalProperties'] -> instance['agent'])
+    for i, key in enumerate(schema_path):
+        if key == "additionalProperties":
+            break
+        if isinstance(parent, dict) and key in parent:
+            parent = parent[key]
+        else:
+            parent = instance
+            break
+    if not isinstance(parent, dict):
+        return _extract_extra_keys(getattr(err, "message", ""))
+    # Determine the relevant schema's `properties` keys. We don't have access
+    # to the full validator here, so fall back to message parsing.
+    return _extract_extra_keys(getattr(err, "message", ""))
 
 
 def main(argv: list[str]) -> int:
