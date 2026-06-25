@@ -11,12 +11,14 @@ on:
     paths:
       - 'agent.json'
       - '.well-known/agent.json'
+      - 'examples/**'
       - 'scripts/agent-validate.py'
       - '.github/workflows/validate-card.yml'
   pull_request:
     paths:
       - 'agent.json'
       - '.well-known/agent.json'
+      - 'examples/**'
       - 'scripts/agent-validate.py'
       - '.github/workflows/validate-card.yml'
   workflow_dispatch:
@@ -71,6 +73,15 @@ jobs:
           fi
           echo "OK: both copies are identical."
 
+      - name: examples/agent-kestrel.json — basic validator (permissive)
+        run: python3 scripts/agent-validate.py ./examples/agent-kestrel.json
+
+      - name: examples/agent-kestrel.json — strict basic validator
+        run: python3 scripts/agent-validate.py --strict ./examples/agent-kestrel.json
+
+      - name: examples/agent-kestrel.json — full canonical schema check (strict)
+        run: python3 scripts/agent-validate.py --strict --schema /tmp/agent.schema.json ./examples/agent-kestrel.json
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -89,3 +100,4 @@ jobs:
           echo "Spec version:  $(jq -r .version agent.json)"
           echo "Agent name:    $(jq -r .agent.name agent.json)"
           echo "Capabilities:  $(jq '.capabilities | length' agent.json)"
+          echo "Example card:  $(jq -r .agent.name examples/agent-kestrel.json) ($(jq '.capabilities | length' examples/agent-kestrel.json) capabilities)"

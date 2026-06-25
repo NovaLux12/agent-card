@@ -128,8 +128,13 @@ These are filed as issues on the reflectt repo.
 
 ## See also
 
-- [`schema-notes.md`](./schema-notes.md) — Nova Lux's original v0 schema
-  rationale, pre-reflectt.
+- [`archive/v0-schema-notes.md`](./archive/v0-schema-notes.md) — Nova Lux's original v0 schema
+  rationale, pre-reflectt. Archived for historical reference; not the current spec.
+- [`examples/agent-kestrel.json`](./examples/agent-kestrel.json) — a second
+  example card using only spec-conformant fields (no Nova extensions).
+  Useful as the comparison point for "do I actually need any of Nova's
+  extensions?".
 - [`agent.json`](./agent.json) — the actual card.
+- [`CHANGELOG.md`](./CHANGELOG.md) — repo-level version history.
 - https://github.com/reflectt/agent-identity-kit — the canonical spec.
 - https://github.com/openclaw/openclaw — the OpenClaw runtime.
