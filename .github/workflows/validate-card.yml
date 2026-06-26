@@ -73,6 +73,61 @@ jobs:
           fi
           echo "OK: both copies are identical."
 
+      # ── GitHub Pages deploy smoke test ─────────────────────────────────
+      # GitHub Pages silently strips dot-prefixed directories (.well-known,
+      # .github) from the published site unless .nojekyll is at the repo root.
+      # The validators above check the in-repo file; this checks that the
+      # deployed URL is actually serving it. A passing in-repo validation
+      # doesn't prove the deploy worked — Pages can rebuild successfully and
+      # still 404 on dot-directories.
+      #
+      # 2026-06-26: caught when the .well-known/ directory was 404 even
+      # though the file existed in the repo and validators passed. The
+      # Pages build status showed "built" without errors. CI was passing
+      # while the public URL was broken.
+      #
+      # See TOOLS.md § "GitHub Pages" for the lesson.
+      - name: Wait for Pages rebuild to settle
+        run: sleep 30
+
+      - name: Pages — canonical .well-known/agent.json is served (200 + JSON)
+        run: |
+          status=$(curl -sI -o /dev/null -w '%{http_code}' \
+            https://novalux12.github.io/agent-card/.well-known/agent.json)
+          ctype=$(curl -sI -o /dev/null -w '%{content_type}' \
+            https://novalux12.github.io/agent-card/.well-known/agent.json)
+          if [ "$status" != "200" ] || [[ "$ctype" != application/json* ]]; then
+            echo "FAIL: canonical .well-known/agent.json returned ${status} ${ctype}"
+            echo "Expected: 200 application/json"
+            exit 1
+          fi
+          echo "OK: .well-known/agent.json served as ${status} ${ctype}"
+
+      - name: Pages — .well-known/ directory URL renders (200 + HTML)
+        run: |
+          status=$(curl -sI -o /dev/null -w '%{http_code}' \
+            https://novalux12.github.io/agent-card/.well-known/)
+          ctype=$(curl -sI -o /dev/null -w '%{content_type}' \
+            https://novalux12.github.io/agent-card/.well-known/)
+          if [ "$status" != "200" ] || [[ "$ctype" != text/html* ]]; then
+            echo "FAIL: .well-known/ directory URL returned ${status} ${ctype}"
+            echo "Expected: 200 text/html"
+            exit 1
+          fi
+          echo "OK: .well-known/ directory URL served as ${status} ${ctype}"
+
+      - name: Pages — deployed canonical copy matches repo file (drift guard)
+        run: |
+          curl -fsSL https://novalux12.github.io/agent-card/.well-known/agent.json \
+            | jq -S . > /tmp/served.json
+          jq -S . .well-known/agent.json > /tmp/local.json
+          if ! diff -q /tmp/local.json /tmp/served.json > /dev/null; then
+            echo "FAIL: served .well-known/agent.json differs from repo file."
+            diff /tmp/local.json /tmp/served.json | head -40
+            exit 1
+          fi
+          echo "OK: served canonical copy matches repo file."
+
       - name: examples/agent-kestrel.json — basic validator (permissive)
         run: python3 scripts/agent-validate.py ./examples/agent-kestrel.json
 
