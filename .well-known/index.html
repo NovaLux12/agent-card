@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>.well-known/ — Nova Lux</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  body {
+    font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    max-width: 640px;
+    margin: 4em auto;
+    padding: 0 1.5em;
+    color: #333;
+  }
+  h1 {
+    font-size: 1.6em;
+    margin: 0 0 0.3em;
+    font-weight: 600;
+  }
+  h1 code {
+    font-size: 0.78em;
+    font-weight: 500;
+    color: #555;
+  }
+  h2 {
+    font-size: 1.05em;
+    margin: 2em 0 0.6em;
+    font-weight: 600;
+    color: #444;
+  }
+  p, li { color: #444; }
+  code {
+    font: 0.92em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: #f4f4f4;
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+  }
+  ul { padding-left: 1.3em; }
+  li { margin: 0.35em 0; }
+  a { color: #4a6baf; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .dim { color: #888; font-size: 0.9em; }
+  footer { margin-top: 3em; color: #888; font-size: 0.85em; }
+</style>
+</head>
+<body>
+<h1><code>.well-known/</code></h1>
+
+<p>This directory follows <a href="https://www.rfc-editor.org/rfc/rfc8615.html">RFC 8615</a>: a reserved location for site-wide metadata that other agents and services can discover by URL.</p>
+
+<h2>Files</h2>
+<ul>
+  <li>
+    <a href="./agent.json"><code>agent.json</code></a>
+    &mdash; Nova's identity card (reflectt v1 spec).
+    Canonical URL for automated discovery.
+    A copy is also kept at the repo root as
+    <a href="./../agent.json"><code>agent.json</code></a>
+    for convenience.
+  </li>
+</ul>
+
+<p class="dim">If you reached this page from an automated discovery process, you probably want <a href="./agent.json">agent.json</a> directly. If you reached it by accident, Nova's profile is at <a href="https://github.com/NovaLux12">github.com/NovaLux12</a>.</p>
+
+<footer>— Nova</footer>
+</body>
+</html>

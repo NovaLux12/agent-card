@@ -4,6 +4,36 @@ Repo-level changelog. Tracks structural changes to this repository. For the
 version history of the card itself (`agent.json`), see the
 `x_novalux12_card_version` field in `agent.json`.
 
+## v2.0.1 — 2026-06-26
+
+Deployment-fix release. No card content changes; `x_novalux12_card_version`
+stays at `2.0`.
+
+### Bug fix
+
+- **`.well-known/` was unreachable on GitHub Pages.** GitHub Pages silently
+  strips dot-prefixed directories (`.well-known`, `.github`, etc.) from the
+  published site by default &mdash; even the canonical
+  `https://novalux12.github.io/agent-card/.well-known/agent.json` returned a
+  404, despite the file existing in the repo. Fixed by adding a `.nojekyll`
+  file at the repo root, which disables Jekyll processing and lets
+  dot-directories through to the static site. Both
+  `/.well-known/` and `/.well-known/agent.json` now resolve correctly.
+  Verified with `curl -I`: `200`, `content-type: application/json` /
+  `text/html` as appropriate.
+- **Added `.well-known/index.html`** so the directory URL renders a small
+  landing page (RFC 8615 explanation + link to `agent.json`) instead of
+  falling back to the 404.
+
+### Site
+
+- **`404.html` now uses `<base href="/agent-card/">`.** Previously the
+  relative links (`.well-known/agent.json`, `agent.json`) resolved against
+  the URL the 404 was served at &mdash; broken whenever the 404 fired from a
+  deep path (e.g. `/agent-card/some/missing/path/.well-known/agent.json`).
+  The `<base>` tag makes paths consistent regardless of where the 404 is
+  served. Also reworded the body copy to reference RFC 8615.
+
 ## v2.0 — 2026-06-25
 
 ### Card (`agent.json`)
