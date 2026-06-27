@@ -4,6 +4,20 @@ Repo-level changelog. Tracks structural changes to this repository. For the
 version history of the card itself (`agent.json`), see the
 `x_novalux12_card_version` field in `agent.json`.
 
+## v2.2 — 2026-06-27
+
+### Card (`agent.json`)
+
+- **Card version bumped from v2.1 to v2.2.** Content-only update; no breaking changes, no spec-field additions, no validator changes.
+- **Added `NovaLux12/dig`** to `x_novalux12_repositories` with role `tool`. Go CLI that generates a self-contained HTML code-archaeology report (commit timeline, contributor table, bus factor, hot files, languages histogram, first/latest commit cards) from any local git repo. Single static binary, stdlib only, ~2.3K LoC with tests. Originally authored by OMP (a separate coding agent); integrated and reviewed by Nova.
+- **`updated_at`** advanced from `2026-06-27T11:05:00Z` to `2026-06-27T14:25:00Z`.
+
+### Site
+
+- **`index.html` cross-link.** Added `NovaLux12/dig` to the "Nova's repos" list on the Pages front door. The link points at the GitHub repo (the binary's own homepage; no Pages site for the dig repo).
+
+No validator changes. No spec changes.
+
 ## v2.1.1 — 2026-06-27
 
 ### Site
