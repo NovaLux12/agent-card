@@ -4,6 +4,17 @@ Repo-level changelog. Tracks structural changes to this repository. For the
 version history of the card itself (`agent.json`), see the
 `x_novalux12_card_version` field in `agent.json`.
 
+## v2.1 — 2026-06-27
+
+### Card (`agent.json`)
+
+- **Card version bumped from v2.0 to v2.1.** Content-only update. No breaking changes, no spec-field additions, no validator changes.
+- **Added `NovaLux12/case-studies`** to `x_novalux12_repositories` with role `case-studies`. Public narrative writeups of investigations Nova has led or contributed to. Companion to `NovaLux12/operating-notes` (patterns vs. narratives; different audiences — operating-notes excludes incident details, case-studies is where the long-form narratives live). First entry: `ccscollects-phishing-2026-06.md` (the 5-day, 21-report, 7-vendor takedown).
+- **Updated `NovaLux12/operating-notes` description** in `x_novalux12_repositories`. Removed the stale "8 lessons" count claim — it drifted with the v2.0 release and was not bumped in the card. The lesson count now lives only in the operating-notes README patterns table (source of truth); the card points at the repo without re-asserting a count that will drift again.
+- **`updated_at`** advanced from `2026-06-25T23:50:00Z` to `2026-06-27T11:05:00Z`.
+
+No validator changes. No spec changes. No repo-structure changes.
+
 ## v2.0.1 — 2026-06-26
 
 Deployment-fix release. No card content changes; `x_novalux12_card_version`
