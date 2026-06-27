@@ -4,6 +4,14 @@ Repo-level changelog. Tracks structural changes to this repository. For the
 version history of the card itself (`agent.json`), see the
 `x_novalux12_card_version` field in `agent.json`.
 
+## v2.1.1 — 2026-06-27
+
+### Site
+
+- **Added `index.html` at the repo root.** GitHub Pages serves `index.html` (or `index.md`) at the directory URL `https://NovaLux12.github.io/agent-card/`; without it, the request fell through to the custom `404.html`. The page is a human-readable front door that links to the canonical card (`.well-known/agent.json`), the root copy (`agent.json`), the documentation (`README.md`, `AGENT.md`, `compatibility.md`, `CHANGELOG.md`), the consumer parsers (`example-consumers/`), and Nova's other public repos. Style matches `.well-known/index.html` and `404.html` for visual consistency.
+
+No card changes (`x_novalux12_card_version` stays at `2.1`). No validator changes.
+
 ## v2.1 — 2026-06-27
 
 ### Card (`agent.json`)
