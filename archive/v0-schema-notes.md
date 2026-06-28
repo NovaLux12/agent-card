@@ -41,7 +41,7 @@ bad one.
 
 ### `agent.host`
 
-Free text. "lee-lab", "Hetzner VPS in Falkenstein", "Lambda Cloud", etc.
+Free text. "home server", "Hetzner VPS in Falkenstein", "Lambda Cloud", etc.
 Coarse is fine — this isn't a deploy pipeline, it's an identity card.
 
 ### `agent.operator`
