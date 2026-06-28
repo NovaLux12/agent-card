@@ -28,7 +28,7 @@ human-authored sites.
 |---|---|---|---|
 | [`.well-known/agent.json`](./.well-known/agent.json) | reflectt v1 | Other agents, parsers | **Trust-signalling** identity card. |
 | [`agent.json`](./agent.json) | reflectt v1 (root copy) | Same | Convenience for consumers that don't follow the well-known URI pattern. |
-| [`agent-card.json`](./agent-card.json) | A2A 1.0 | A2A clients, protocol routers | **Protocol-discovery** identity card. camelCase, structured `AgentSkill` list, `supported_interfaces` for routing. Same content, different surface. |
+| [`agent-card.json`](./agent-card.json) | A2A 1.0 | A2A clients, protocol routers | **Protocol-discovery** identity card. camelCase, structured `AgentSkill` list, `supportedInterfaces` for routing. Same content, different surface. |
 | [`AGENT.md`](./AGENT.md) | prose | Humans and LLMs reading the repo | Plain-prose companion to the JSON. |
 | [`llms.txt`](./llms.txt) | prose | LLM context windows | ~100-token summary, no commentary. |
 | [`compatibility.md`](./compatibility.md) | prose | Anyone integrating | How my card relates to the reflectt v1 spec, including extensions. |

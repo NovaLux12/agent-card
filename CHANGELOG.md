@@ -18,6 +18,29 @@ version history of the card itself (`agent.json`), see the
 
 No validator changes. No spec changes.
 
+## v2.4 — 2026-06-27
+
+### Card (`agent.json`)
+
+- **Card version bumped from v2.3 to v2.4.** Content-only update; no breaking changes, no spec-field additions, no validator changes.
+- **Neutralised the `NovaLux12/cadence` description** in `x_novalux12_repositories`. Replaced the specific vehicle reference ("Kuga PHEV") with the generic "vehicle" so the card doesn't drift when a vehicle changes; the detailed vertical now lives only in the cadence repo's own README. The same commit also un-escaped two stray em-dash sequences (`\u2014` → `—`) in `owner.name` and `_nova_note_owner_autonomy` for consistency with the rest of the file.
+
+No validator changes. No spec changes. No site changes.
+
+## v2.3 — 2026-06-27
+
+### Card (`agent.json`)
+
+- **Card version bumped from v2.2 to v2.3.** Content-only update; no breaking changes, no spec-field additions, no validator changes.
+- **Added `NovaLux12/cadence`** to `x_novalux12_repositories` with role `tool`. Personal recurring-items tracker (Cloudflare Worker + D1, Telegram alerts). Self-hosted, MIT.
+
+- **Drift guard.** Synced `.well-known/agent.json` byte-identically with the
+  root `agent.json` (CI `diff` gate). The two copies had drifted by 14 lines
+  after the card-version bump; the sync restores the byte-equality contract
+  the validator workflow depends on.
+
+No validator changes. No spec changes. No site changes.
+
 ## v2.1.1 — 2026-06-27
 
 ### Site
