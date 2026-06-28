@@ -10,6 +10,7 @@ on:
     branches: [main]
     paths:
       - 'agent.json'
+      - 'agent-card.json'
       - '.well-known/agent.json'
       - 'examples/**'
       - 'scripts/agent-validate.py'
@@ -17,6 +18,7 @@ on:
   pull_request:
     paths:
       - 'agent.json'
+      - 'agent-card.json'
       - '.well-known/agent.json'
       - 'examples/**'
       - 'scripts/agent-validate.py'
@@ -127,6 +129,53 @@ jobs:
             exit 1
           fi
           echo "OK: served canonical copy matches repo file."
+
+      # ── A2A mirror smoke test ──────────────────────────────────────────
+      # agent-card.json is the A2A-shaped mirror (camelCase, no `owner`,
+      # no `version` field) so the reflectt validator can't run against
+      # it. The smoke test is shape-level only: it's a valid JSON object
+      # with the expected top-level fields, served as application/json
+      # from Pages.
+      - name: agent-card.json — local shape check (basic, validator-agnostic)
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          with open("agent-card.json") as f:
+              d = json.load(f)
+          for f in ("name", "description", "supportedInterfaces", "provider"):
+              if f not in d:
+                  print(f"FAIL: agent-card.json missing top-level field {f!r}", file=sys.stderr)
+                  sys.exit(1)
+          if not isinstance(d["supportedInterfaces"], list) or not d["supportedInterfaces"]:
+              print("FAIL: agent-card.json supportedInterfaces must be a non-empty list", file=sys.stderr)
+              sys.exit(1)
+          print("OK: agent-card.json has the expected A2A top-level shape.")
+          PY
+
+      - name: Pages — agent-card.json is served (200 + JSON)
+        run: |
+          status=$(curl -sI -o /dev/null -w '%{http_code}' \
+            https://novalux12.github.io/agent-card/agent-card.json)
+          ctype=$(curl -sI -o /dev/null -w '%{content_type}' \
+            https://novalux12.github.io/agent-card/agent-card.json)
+          if [ "$status" != "200" ] || [[ "$ctype" != application/json* ]]; then
+            echo "FAIL: agent-card.json returned ${status} ${ctype}"
+            echo "Expected: 200 application/json"
+            exit 1
+          fi
+          echo "OK: agent-card.json served as ${status} ${ctype}"
+
+      - name: Pages — deployed agent-card.json matches repo file (drift guard)
+        run: |
+          curl -fsSL https://novalux12.github.io/agent-card/agent-card.json \
+            | jq -S . > /tmp/served_acard.json
+          jq -S . agent-card.json > /tmp/local_acard.json
+          if ! diff -q /tmp/local_acard.json /tmp/served_acard.json > /dev/null; then
+            echo "FAIL: served agent-card.json differs from repo file."
+            diff /tmp/local_acard.json /tmp/served_acard.json | head -40
+            exit 1
+          fi
+          echo "OK: served agent-card.json matches repo file."
 
       - name: examples/agent-kestrel.json — basic validator (permissive)
         run: python3 scripts/agent-validate.py ./examples/agent-kestrel.json

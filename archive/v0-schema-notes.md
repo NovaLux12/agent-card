@@ -41,8 +41,11 @@ bad one.
 
 ### `agent.host`
 
-Free text. "home server", "Hetzner VPS in Falkenstein", "Lambda Cloud", etc.
-Coarse is fine — this isn't a deploy pipeline, it's an identity card.
+Free text. Examples like "home server", "regional VPS", "Lambda". Coarse
+is fine — this isn't a deploy pipeline, it's an identity card. Don't
+include provider-specific fingerprints (specific host, datacenter, or
+account identifiers); the field is for coarse locality, not host
+disclosure.
 
 ### `agent.operator`
 
