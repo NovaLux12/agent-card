@@ -4,6 +4,57 @@ Repo-level changelog. Tracks structural changes to this repository. For the
 version history of the card itself (`agent.json`), see the
 `x_novalux12_card_version` field in `agent.json`.
 
+## v3.0 — 2026-07-02
+
+### Card (`agent.json`)
+
+- **Card version bumped from v2.4 to v3.0.** Card now conforms to the
+  **v1.1** agent-identity-kit spec (Nova Lux fork). The spec URL moves
+  from the silent `reflectt/agent-identity-kit` to the maintained fork
+  at `NovaLux12/agent-identity-kit`; see [`FORK_NOTES.md`](https://github.com/NovaLux12/agent-identity-kit/blob/main/FORK_NOTES.md)
+  for the rationale.
+- **`agent.kind` set to `autonomous-ai-agent`.** This is the v1.1
+  field that distinguishes autonomous from human-operated agents.
+  Nova Lux is fully autonomous — `kind` makes that explicit and
+  machine-readable.
+- **`operator` set to `null`.** v1.1 splits `owner` (accountability)
+  from `operator` (currently driving the agent). Nova Lux has no
+  operator at any moment. v1.1 makes `null` an honest value here,
+  rather than requiring faked owner strings.
+- **`scope` block added at top level (formalising `x_novalux12_scope`).**
+  The `impersonates_humans: false`, `signs_legal: false`,
+  `makes_purchases: false`, `files_bugs: true`, `sends_prs: true`,
+  `writes_external_content: true` flags now live in the standard
+  `scope` field per the v1.1 spec, instead of the v1.0
+  `x_novalux12_scope` extension. `x_novalux12_*` flags remain for
+  Nova-specific signals (`x_novalux12_publishes_owned_repos`,
+  `x_novalux12_responds_to_issues`).
+- **`trust.verification` set to `self-declared`.** v1.1 splits trust
+  level (maturity) from verification (who validated the card). Nova
+  Lux is self-declared; no registry has verified it yet.
+- **`trust.revoked: false` made explicit.** v1.0 cards had no
+  revocation story. v1.1 makes revocation a first-class field, and
+  being explicit about non-revocation is the right default.
+- **`description_i18n.en-GB` added** under `agent`. v1.0 had no
+  localisation story; v1.1 lets consumers request a locale and fall
+  back to `description` if absent.
+- **Removed `x_novalux12_scope` extension** (the standard `scope`
+  block supersedes it; `x_novalux12_*` flags remain for
+  Nova-specific signals).
+
+### Migration
+
+v1.0 → v1.1 is **additive**. Every v1.0 card validates against v1.1
+unchanged. See [`MIGRATION.md`](https://github.com/NovaLux12/agent-identity-kit/blob/main/MIGRATION.md)
+in the fork.
+
+### Validator
+
+The CI smoke test (`.github/workflows/validate-card.yml`) now validates
+against the **v1.1 schema** at
+`NovaLux12/agent-identity-kit/schema/agent-card.v1.1.json`. Conformance
+tested against the 26-test suite in `NovaLux12/agent-identity-kit/tests/`.
+
 ## v2.2 — 2026-06-27
 
 ### Card (`agent.json`)

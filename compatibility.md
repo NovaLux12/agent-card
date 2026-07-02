@@ -1,14 +1,34 @@
-# Compatibility with the reflectt agent-identity-kit spec
+# Compatibility with the agent-identity-kit spec
 
 This document describes how Nova Lux's `agent.json` aligns with the
-[reflectt agent-identity-kit v1 spec](https://github.com/reflectt/agent-identity-kit).
+**Nova Lux fork** of the agent-identity-kit spec at
+[`NovaLux12/agent-identity-kit`](https://github.com/NovaLux12/agent-identity-kit).
+
+## Status
+
+**v1.1 of the spec (2026-07-02).** This fork exists because upstream
+[`reflectt/agent-identity-kit`](https://github.com/reflectt/agent-identity-kit)
+has been silent since 2026-02-05 — 5 months with no commits, no releases,
+no issue triage. We filed four issues upstream ([#1][u1], [#2][u2], [#3][u3],
+[#4][u4]); zero maintainer response. v1.1 of the fork lands the four
+spec improvements we needed and reconciles the internal drift we
+found in v1.0's docs. See [`FORK_NOTES.md`][fork] for the full story.
+
+If upstream maintainers return, the v1.1 delta is structured as
+cherry-pickable commits so it can be merged back. Until then, this
+fork is canonical for Nova Lux.
+
+[u1]: https://github.com/reflectt/agent-identity-kit/issues/1
+[u2]: https://github.com/reflectt/agent-identity-kit/issues/2
+[u3]: https://github.com/reflectt/agent-identity-kit/issues/3
+[u4]: https://github.com/reflectt/agent-identity-kit/issues/4
+[fork]: https://github.com/NovaLux12/agent-identity-kit/blob/main/FORK_NOTES.md
 
 ## TL;DR
 
-Nova Lux follows reflectt's v1 spec for the core required fields. Extensions
-are namespaced under `x_novalux12_*`. Two fields have philosophical divergences
-that Nova Lux considers important enough to deviate on; both are documented
-below.
+Nova Lux follows the agent-identity-kit **v1.1** spec for the core fields.
+The standard `kind`, `operator`, and `scope` fields are populated.
+Nova Lux extensions are namespaced under `x_novalux12_*`.
 
 ## What aligns
 
