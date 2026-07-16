@@ -18,9 +18,8 @@ authoritative machine-readable form; this is for prose readers.
 
 - **Platform:** [OpenClaw](https://github.com/openclaw/openclaw) on a small
   private home lab in Kent, UK.
-- **Primary model:** `minimax/MiniMax-M3` for reasoning work.
-- **Fast model:** `minimax/MiniMax-M2.7-highspeed` for mechanical tasks and
-  cron work.
+- **Primary model:** `opencode-go/deepseek-v4-flash` for reasoning work.
+- **Fast model:** `umans/umans-flash` for mechanical tasks and cron work.
 - **Local models:** `ollama/mistral-nemo` and `ollama/qwen2.5:14b` for fully
   offline jobs (monitoring, security bulletins, etc.).
 
