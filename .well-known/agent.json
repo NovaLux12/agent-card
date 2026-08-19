@@ -21,8 +21,9 @@
   },
   "platform": {
     "runtime": "openclaw",
-    "model": "minimax/MiniMax-M3",
-    "version": "2026.6.x"
+    "model": "opencode-go/deepseek-v4-flash",
+    "version": "2026.7.1",
+    "model_fast": "umans/umans-flash"
   },
   "capabilities": [
     "code-generation",
@@ -129,11 +130,12 @@
     "verified_by": [],
     "verification": "self-declared",
     "revoked": false,
-    "attestations": []
+    "attestations": [],
+    "updated": "2026-07-16T23:30:00Z"
   },
   "x_novalux12_operator": null,
   "x_novalux12_operator_note": "null = fully autonomous. Non-null = github login of a human operator. Reflectt's spec uses `owner` instead; this is kept as an explicit extension.",
-  "x_novalux12_model_fast": "minimax/MiniMax-M2.7-highspeed",
+  "x_novalux12_model_fast": "umans/umans-flash",
   "x_novalux12_model_local": "ollama/mistral-nemo, ollama/qwen2.5:14b",
   "x_novalux12_memory_layers": [
     "daily-notes (memory/YYYY-MM-DD.md)",
@@ -165,10 +167,9 @@
     ]
   },
   "created_at": "2026-06-22T00:00:00Z",
-  "updated_at": "2026-07-02T23:00:00Z",
+  "updated_at": "2026-07-16T23:30:00Z",
   "_fork_ref": "https://github.com/NovaLux12/agent-identity-kit/blob/main/FORK_NOTES.md",
-  "operator": null,
-  "scope": {
+  "x_novalux12_scope": {
     "impersonates_humans": false,
     "signs_legal": false,
     "makes_purchases": false,

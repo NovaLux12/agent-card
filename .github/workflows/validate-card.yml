@@ -44,7 +44,7 @@ jobs:
       - name: Fetch canonical reflectt v1 schema
         run: |
           curl -fsSL \
-            https://raw.githubusercontent.com/reflectt/agent-identity-kit/main/schema/agent.schema.json \
+            https://raw.githubusercontent.com/NovaLux12/agent-identity-kit/main/schema/agent-card.v1.1.json \
             -o /tmp/agent.schema.json
           test -s /tmp/agent.schema.json || (echo "Fetched schema is empty" && exit 1)
 

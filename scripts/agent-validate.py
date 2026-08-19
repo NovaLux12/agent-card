@@ -38,7 +38,7 @@ from typing import Any
 REQUIRED_TOP = ["version", "agent", "owner"]
 REQUIRED_AGENT = ["name", "handle", "description"]
 REQUIRED_OWNER = ["name"]
-ALLOWED_VERSIONS = ["1.0"]
+ALLOWED_VERSIONS = ["1.0", "1.1"]
 ALLOWED_TRUST_LEVELS = ["new", "active", "established", "verified"]
 # Fediverse handle: @name@domain.tld (per spec)
 HANDLE_PATTERN = re.compile(r"^@[a-zA-Z0-9_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")

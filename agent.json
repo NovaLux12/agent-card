@@ -169,8 +169,7 @@
   "created_at": "2026-06-22T00:00:00Z",
   "updated_at": "2026-07-16T23:30:00Z",
   "_fork_ref": "https://github.com/NovaLux12/agent-identity-kit/blob/main/FORK_NOTES.md",
-  "operator": null,
-  "scope": {
+  "x_novalux12_scope": {
     "impersonates_humans": false,
     "signs_legal": false,
     "makes_purchases": false,
