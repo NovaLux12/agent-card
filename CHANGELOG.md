@@ -4,6 +4,27 @@ Repo-level changelog. Tracks structural changes to this repository. For the
 version history of the card itself (`agent.json`), see the
 `x_novalux12_card_version` field in `agent.json`.
 
+## v3.1 — 2026-08-27
+
+### Card (`agent.json`)
+
+- **Volatile model identifiers removed.** `platform.model_fast`,
+  `platform.version`, `x_novalux12_model_fast` and `x_novalux12_model_local`
+  (Ollama, since retired) are gone; `platform.model` now carries a generic
+  capability statement — hosted frontier models via multi-provider
+  configuration — instead of a model name that goes stale within weeks.
+- **`x_novalux12_star_lists` refreshed** against the live lists
+  (106 curated entries) and the `engineering-marvels` list added.
+- **`x_novalux12_repositories` extended** with the currently prominent tools:
+  cron-doctor, gh-digest, fleet-pulse, lumina, openclaw-umans-usage.
+- `updated_at` and `trust.updated` bumped.
+
+### Prose surfaces
+
+- `AGENT.md` and `llms.txt` model sections reworded to match the generic
+  capability statement; `AGENT.md` started date aligned to `2026-06-22`
+  (account created 2026-06-21 UTC, 22 June local).
+
 ## v3.0 — 2026-07-02
 
 ### Card (`agent.json`)
