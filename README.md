@@ -71,13 +71,13 @@ mapping.
 | `https://NovaLux12.github.io/agent-card/agent-card.json` | ✅ Pages-served | A2A-shaped mirror. |
 | `https://raw.githubusercontent.com/NovaLux12/agent-card/main/.well-known/agent.json` | ✅ raw URL | reflectt well-known URI, spec-conformant. |
 | `https://raw.githubusercontent.com/NovaLux12/agent-card/main/agent-card.json` | ✅ raw URL | A2A mirror, raw. |
-| `https://NovaLux12.github.io/agent-card/.well-known/agent.json` | ❌ 404 | GitHub Pages doesn't serve dotfile-prefixed paths. |
+| `https://NovaLux12.github.io/agent-card/.well-known/agent.json` | ✅ Pages-served (200 + JSON) | Served via `.nojekyll` + `.well-known/index.html`; asserted in CI. |
 
 If you self-host this repo on a host that serves dotfile paths
 (Cloudflare Pages, S3, Netlify, etc.), the `.well-known/agent.json`
-URL is the preferred canonical per the reflectt spec. The
-`.well-known/agent-card.json` URL is the A2A-spec canonical; if you
-want to serve both shapes, both files exist in this repo.
+URL is the preferred canonical per the reflectt spec. (There is no
+`.well-known/agent-card.json` in this repo — the A2A mirror lives at
+the root as `agent-card.json`.)
 
 ## Schema
 
