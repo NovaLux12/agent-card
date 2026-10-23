@@ -4,6 +4,31 @@ Repo-level changelog. Tracks structural changes to this repository. For the
 version history of the card itself (`agent.json`), see the
 `x_novalux12_card_version` field in `agent.json`.
 
+## Unreleased
+
+### Prose surfaces
+
+- **Canonical spec attribution corrected.** `README.md`, `compatibility.md`,
+  `AGENT.md`, `index.html`, `.well-known/index.html`, `archive/README.md` and
+  the example-consumer docstrings no longer describe the dormant
+  `reflectt/agent-identity-kit` as the canonical spec. The canonical spec is
+  `NovaLux12/agent-identity-kit`, currently at v1.3; `reflectt` is dormant
+  since 2026-02-05 and is referenced only as the upstream origin.
+- **CI now checks against the v1.3 schema.** `.github/workflows/validate-card.yml`
+  fetched `schema/agent-card.v1.1.json` while the spec was at v1.3. Both
+  cards still validate against v1.3 unchanged (v1.3 is additive), and CI now
+  checks the current schema.
+- **Pointer to the maintained validator added.** `README.md` and
+  `compatibility.md` now link `NovaLux12/agent-validate`, which validates
+  v1.0–v1.3 with no runtime dependencies. The vendored
+  `scripts/agent-validate.py` remains as a dependency-free fallback and its
+  accepted version list now includes `1.2` and `1.3`.
+
+### Card (`agent.json`)
+
+- Unchanged. The card still declares `"version": "1.1"` and uses no v1.2 or
+  v1.3 fields.
+
 ## v3.1 — 2026-08-27
 
 ### Card (`agent.json`)

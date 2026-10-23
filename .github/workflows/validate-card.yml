@@ -1,9 +1,12 @@
 name: Validate agent card
 
 # Validates both copies of the card (root + .well-known mirror) against:
-#   1. The basic checks in scripts/agent-validate.py (reflectt v1 required fields)
-#   2. The canonical reflectt v1 JSON schema (strict, type-checked)
+#   1. The basic checks in scripts/agent-validate.py (agent-identity-kit v1 required fields)
+#   2. The canonical agent-identity-kit v1.3 JSON schema (strict, type-checked)
 #   3. Byte-equality between the two copies (drift guard)
+#
+# The canonical spec is NovaLux12/agent-identity-kit (the reflectt/agent-identity-kit
+# original has had no commits since 2026-02-05).
 
 on:
   push:
@@ -27,7 +30,7 @@ on:
 
 jobs:
   validate:
-    name: Validate agent.json against reflectt v1 spec
+    name: Validate agent.json against agent-identity-kit v1 spec
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -41,10 +44,10 @@ jobs:
       - name: Install jsonschema (for full canonical-schema check)
         run: pip install jsonschema
 
-      - name: Fetch canonical reflectt v1 schema
+      - name: Fetch canonical agent-identity-kit v1.3 schema
         run: |
           curl -fsSL \
-            https://raw.githubusercontent.com/NovaLux12/agent-identity-kit/main/schema/agent-card.v1.1.json \
+            https://raw.githubusercontent.com/NovaLux12/agent-identity-kit/main/schema/agent-card.v1.3.json \
             -o /tmp/agent.schema.json
           test -s /tmp/agent.schema.json || (echo "Fetched schema is empty" && exit 1)
 
@@ -132,10 +135,10 @@ jobs:
 
       # ── A2A mirror smoke test ──────────────────────────────────────────
       # agent-card.json is the A2A-shaped mirror (camelCase, no `owner`,
-      # no `version` field) so the reflectt validator can't run against
-      # it. The smoke test is shape-level only: it's a valid JSON object
-      # with the expected top-level fields, served as application/json
-      # from Pages.
+      # no `version` field) so the agent-identity-kit validator can't run
+      # against it. The smoke test is shape-level only: it's a valid JSON
+      # object with the expected top-level fields, served as
+      # application/json from Pages.
       - name: agent-card.json — local shape check (basic, validator-agnostic)
         run: |
           python3 - <<'PY'
