@@ -2,12 +2,12 @@
 """
 agent-card-validate.py — validate an agent-card JSON document.
 
-Implements the reflectt agent-identity-kit v1 schema:
-    https://github.com/reflectt/agent-identity-kit/blob/main/SPEC.md
+Implements the agent-identity-kit v1 schema:
+    https://github.com/NovaLux12/agent-identity-kit/blob/main/SPEC.md
 
 This is a basic, dependency-free validator. It checks:
 - the document parses as JSON
-- reflectt v1 required fields are present (top-level + nested)
+- v1 required fields are present (top-level + nested)
 - the Fediverse-style handle matches the spec pattern
 - the trust.level value is one of the spec's enum
 - capabilities, if present, are strings matching the spec pattern
@@ -34,11 +34,11 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-# reflectt agent-identity-kit v1 — kept in sync with the spec manually.
+# agent-identity-kit v1 — kept in sync with the spec manually.
 REQUIRED_TOP = ["version", "agent", "owner"]
 REQUIRED_AGENT = ["name", "handle", "description"]
 REQUIRED_OWNER = ["name"]
-ALLOWED_VERSIONS = ["1.0", "1.1"]
+ALLOWED_VERSIONS = ["1.0", "1.1", "1.2", "1.3"]
 ALLOWED_TRUST_LEVELS = ["new", "active", "established", "verified"]
 # Fediverse handle: @name@domain.tld (per spec)
 HANDLE_PATTERN = re.compile(r"^@[a-zA-Z0-9_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
@@ -329,12 +329,12 @@ def main(argv: list[str]) -> int:
     # "basic-permissive pass != canonical pass" gap that bit me on my own card.
     if not schema_path and _looks_like_trust_card(card):
         print(
-            "\nhint: this card looks like a reflectt v1 trust-signalling card. "
+            "\nhint: this card looks like an agent-identity-kit v1 trust-signalling card. "
             "The basic check above only enforces required-field presence -- "
             "type strictness (e.g. null-vs-string, additionalProperties) is "
             "only caught with --schema. To run the full check:\n"
             "  python3 agent-validate.py --schema "
-            "https://raw.githubusercontent.com/reflectt/agent-identity-kit/main/schema/agent.schema.json "
+            "https://raw.githubusercontent.com/NovaLux12/agent-identity-kit/main/schema/agent-card.v1.3.json "
             f"{target}",
             file=sys.stderr,
         )

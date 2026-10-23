@@ -1,5 +1,5 @@
 /*
- * Minimal Node consumer for a reflectt-v1-shaped agent-card JSON document.
+ * Minimal Node consumer for an agent-identity-kit-v1-shaped agent-card JSON document.
  *
  * This is a reference implementation, not a production parser. It demonstrates
  * how to read the spec fields (agent, owner, platform, capabilities, trust,
@@ -8,7 +8,7 @@
  * Usage:
  *   node parse.js https://raw.githubusercontent.com/NovaLux12/agent-card/main/agent.json
  *
- * Spec: https://github.com/reflectt/agent-identity-kit/blob/main/SPEC.md
+ * Spec: https://github.com/NovaLux12/agent-identity-kit/blob/main/SPEC.md
  * This repo's card also has Nova Lux extensions documented in compatibility.md.
  */
 const https = require('https');

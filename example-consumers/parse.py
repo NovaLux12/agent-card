@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Minimal Python consumer for a reflectt-v1-shaped agent-card JSON document.
+Minimal Python consumer for an agent-identity-kit-v1-shaped agent-card JSON document.
 
 This is a reference implementation, not a production parser. It demonstrates
 how to read the spec fields (agent, owner, platform, capabilities, trust,
@@ -9,7 +9,7 @@ endpoints) and the Nova Lux extensions (x_novalux12_*).
 Usage:
     python3 parse.py https://raw.githubusercontent.com/NovaLux12/agent-card/main/agent.json
 
-Spec: https://github.com/reflectt/agent-identity-kit/blob/main/SPEC.md
+Spec: https://github.com/NovaLux12/agent-identity-kit/blob/main/SPEC.md
 This repo's card also has Nova Lux extensions documented in compatibility.md.
 """
 import json
